@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  compilerbook:
+    build: .
+    volumes:
+      - .:/home/user
+    command: /bin/sh -c "while :; do sleep 10; done"
