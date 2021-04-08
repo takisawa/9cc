@@ -5,3 +5,6 @@ a.out
 
 .cache
 .vscode-server
+.ssh
+.gitconfig
+.bash_history
