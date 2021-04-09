@@ -2,7 +2,6 @@
 tmp*
 a.out
 9cc
-funcdata
 
 .cache
 .vscode-server

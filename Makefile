@@ -9,7 +9,3 @@ clean:
 	rm -f 9cc funcdata *.o
 
 .PHONY: test clean
-
-# 分割コンパイルとリンク / 分割コンパイルとは / グローバル変数の宣言と定義
-funcdata:
-	cc -static -Wl,--omagic -o funcdata funcdata.c
