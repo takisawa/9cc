@@ -32,6 +32,7 @@ void error_at(char *loc, char *fmt, ...);
 bool consume(char *op);
 void expect(char *op);
 int expect_number();
+Token *consume_ident();
 bool at_eof();
 void tokenize();
 extern Token *token;

@@ -55,6 +55,17 @@ int expect_number() {
     return val;
 }
 
+Token *consume_ident() {
+    Token *tok;
+
+    if (token->kind != TK_IDENT)
+        return NULL;
+
+    tok = token;
+    token = token->next;
+    return token;
+}
+
 bool at_eof() {
     return token->kind == TK_EOF;
 }
@@ -107,7 +118,7 @@ void tokenize() {
         }
 
         // Single-letter punctuator
-        if (strchr("+-*/()<>;", *p)) {
+        if (strchr("+-*/()<>=;", *p)) {
             cur = new_token(TK_RESERVED, cur, p++, 1);
             continue;
         }
