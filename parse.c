@@ -1,6 +1,8 @@
 #include "9cc.h"
 
-Node *expr();
+static Node *stmt();
+static Node *assign();
+static Node *expr();
 static Node *equality();
 static Node *relational();
 static Node *add();
@@ -27,9 +29,35 @@ Node *new_num(int val) {
     return node;
 }
 
-// expr = equality
+Node *code[100];
+
+// program = stmt*
+void program() {
+    int i = 0;
+    while (!at_eof()) {
+        code[i++] = stmt();
+    }
+    code[i] = NULL;
+}
+
+// stmt = expr ";"
+Node *stmt() {
+    Node *node = expr();
+    expect(";");
+    return node;
+}
+
+// expr = assign
 Node *expr() {
-    return equality();
+    return assign();
+}
+
+// assign = equality ("=" assign)?
+Node *assign() {
+    Node *node = equality();
+    if (consume("="))
+        node = new_binary(ND_ASSIGN, node, assign());
+    return node;
 }
 
 // equality = relational ("==" relational | "!=" relational)*
@@ -102,7 +130,7 @@ Node *unary() {
     return primary();
 }
 
-// primary = "(" expr ")" | num
+// primary = num | ident | "(" expr ")"
 Node *primary() {
     if (consume("(")) {
         Node *node = expr();

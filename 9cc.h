@@ -12,6 +12,7 @@
 
 typedef enum {
     TK_RESERVED, // 記号
+    TK_IDENT,    // 識別子
     TK_NUM,      // 整数トークン
     TK_EOF,      // 入力の終わりを表すトークン
 } TokenKind;
@@ -31,23 +32,28 @@ void error_at(char *loc, char *fmt, ...);
 bool consume(char *op);
 void expect(char *op);
 int expect_number();
-Token *tokenize(char *input);
+bool at_eof();
+void tokenize();
 extern Token *token;
+extern char *user_input;
+
 
 //
 // Parser
 //
 
 typedef enum {
-  ND_ADD, // +
-  ND_SUB, // -
-  ND_MUL, // *
-  ND_DIV, // /
-  ND_EQ,  // ==
-  ND_NE,  // !=
-  ND_LT,  // <
-  ND_LE,  // <=
-  ND_NUM, // Integer
+  ND_ADD,    // +
+  ND_SUB,    // -
+  ND_MUL,    // *
+  ND_DIV,    // /
+  ND_EQ,     // ==
+  ND_NE,     // !=
+  ND_LT,     // <
+  ND_LE,     // <=
+  ND_ASSIGN, // =
+  ND_LVAR,   // Local variable
+  ND_NUM,    // Integer
 } NodeKind;
 
 // AST node type
@@ -57,9 +63,11 @@ struct Node {
     Node *lhs;     // Left-hand side
     Node *rhs;     // Right-hand side
     int val;       // Used if kind == ND_NUM
+    int offset;    // Used if kind == ND_LVAR
 };
 
-Node *expr();
+void program();
+extern Node *code[100];
 
 //
 // codegen.c

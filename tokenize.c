@@ -1,8 +1,5 @@
 #include "9cc.h"
 
-// 入力プログラム
-static char *user_input;
-
 // 現在着目しているトークン
 Token *token;
 
@@ -76,9 +73,9 @@ bool startswith(char *p, char *q) {
     return memcmp(p, q, strlen(q)) == 0;
 }
 
-// 入力文字列pをトークナイズしてそれを返す
-Token *tokenize(char *p) {
-    user_input = p;
+// 入力文字列user_inputをトークナイズする
+void tokenize() {
+    char *p = user_input;
     Token head;
     head.next = NULL;
     Token *cur = &head;
@@ -90,6 +87,18 @@ Token *tokenize(char *p) {
             continue;
         }
 
+        // Identifier
+        if ('a' <= *p && *p <= 'z') {
+            cur = new_token(TK_IDENT, cur, p++, 1);
+            continue;
+        }
+
+        // Identifier
+        if ('a' <= *p && *p <= 'z') {
+            cur = new_token(TK_IDENT, cur, p++, 1);
+            continue;
+        }
+
         // Multi-letter punctuator
         if (startswith(p, "==") || startswith(p, "!=") || startswith(p, "<=") || startswith(p, ">=")) {
             cur = new_token(TK_RESERVED, cur, p, 2);
@@ -98,7 +107,7 @@ Token *tokenize(char *p) {
         }
 
         // Single-letter punctuator
-        if (strchr("+-*/()<>", *p)) {
+        if (strchr("+-*/()<>;", *p)) {
             cur = new_token(TK_RESERVED, cur, p++, 1);
             continue;
         }
@@ -116,5 +125,5 @@ Token *tokenize(char *p) {
     }
 
     new_token(TK_EOF, cur, p, 0);
-    return head.next;
+    token = head.next;
 }
