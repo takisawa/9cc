@@ -104,12 +104,6 @@ void tokenize() {
             continue;
         }
 
-        // Identifier
-        if ('a' <= *p && *p <= 'z') {
-            cur = new_token(TK_IDENT, cur, p++, 1);
-            continue;
-        }
-
         // Multi-letter punctuator
         if (startswith(p, "==") || startswith(p, "!=") || startswith(p, "<=") || startswith(p, ">=")) {
             cur = new_token(TK_RESERVED, cur, p, 2);
