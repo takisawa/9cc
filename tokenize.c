@@ -33,6 +33,7 @@ bool consume(char *op) {
     if (token->kind != TK_RESERVED || strlen(op) != token->len || memcmp(token->str, op, token->len)) {
         return false;
     }
+    // printf("[debug] consume: token->str:`%s`\n", token->str);
     token = token->next;
     return true;
 }
@@ -42,6 +43,7 @@ bool consume(char *op) {
 void expect(char *op) {
     if (token->kind != TK_RESERVED || strlen(op) != token->len || memcmp(token->str, op, token->len))
         error_at(token->str, "expected \"%s\"", op);
+    // printf("[debug] expect: arg:`%s`, token->str:`%s`\n", op, token->str);
     token = token->next;
 }
 
@@ -61,9 +63,10 @@ Token *consume_ident() {
     if (token->kind != TK_IDENT)
         return NULL;
 
+    // printf("[debug] consume_ident: token->str:`%s`\n", token->str);
     tok = token;
     token = token->next;
-    return token;
+    return tok;
 }
 
 bool at_eof() {

@@ -35,6 +35,7 @@ Node *code[100];
 void program() {
     int i = 0;
     while (!at_eof()) {
+        // printf("[debug]program\n");
         code[i++] = stmt();
     }
     code[i] = NULL;
@@ -42,8 +43,11 @@ void program() {
 
 // stmt = expr ";"
 Node *stmt() {
+    // printf("[debug] stmt0\n");
     Node *node = expr();
+    // printf("[debug] stmt1\n");
     expect(";");
+    // printf("[debug] stmt2\n");
     return node;
 }
 
@@ -54,9 +58,12 @@ Node *expr() {
 
 // assign = equality ("=" assign)?
 Node *assign() {
+    // printf("[debug] assign0\n");
     Node *node = equality();
-    if (consume("="))
+    if (consume("=")) {
+        // printf("[debug] assign1 before new_binary\n");
         node = new_binary(ND_ASSIGN, node, assign());
+    }
     return node;
 }
 
@@ -132,10 +139,13 @@ Node *unary() {
 
 // primary = num | ident | "(" expr ")"
 Node *primary() {
+    // printf("[debug] primary0\n");
     Token *tok = consume_ident();
+    // printf("[debug] primary1: tok->str[0]:`%c`\n", tok->str[0]);
     if (tok) {
         Node *node = calloc(1, sizeof(Node));
         node->kind = ND_LVAR;
+        // printf("[debug] primary2: tok->str[0]:`%c`\n", tok->str[0]);
         node->offset = (tok->str[0] - 'a' + 1) * 8;
         return node;
     }
