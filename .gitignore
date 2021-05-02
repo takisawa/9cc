@@ -1,7 +1,7 @@
-*.o
-tmp*
-a.out
-9cc
+**/*.o
+**/*.s
+/tmp*
+/chibicc
 
 .cache
 .vscode-server
