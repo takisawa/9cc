@@ -16,6 +16,12 @@ typedef enum {
     TK_EOF,   // End-of-file markers
 } TokenKind;
 
+static char *TokenKindStrs[] = {
+    "TK_PUNCT",
+    "TK_NUM",
+    "TK_EOF",
+};
+
 // Token type
 typedef struct Token Token;
 struct Token {
@@ -25,6 +31,16 @@ struct Token {
     char *loc;      // Token location
     int len;        // Token length
 };
+
+// Show token list for debug
+static void debug_show_tokens(Token *tok) {
+    int i = 0;
+    fprintf(stderr, "\n[Tokens]\n");
+    for (Token *t = tok; t != NULL; t = t->next) {
+        fprintf(stderr, "  [%d] kind:%s, val:%d, loc:%.*s, len:%d\n", i, TokenKindStrs[t->kind], t->val, t->len, t->loc, t->len);
+        i++;
+    }
+}
 
 // Input string
 static char *current_input;
@@ -127,6 +143,7 @@ static Token *tokenize(void) {
     return head.next;
 }
 
+
 //
 // Parser
 //
@@ -227,6 +244,7 @@ static Node *primary(Token **rest, Token *tok) {
     error_tok(tok, "expected an expression");
 }
 
+
 //
 // Code generator
 //
@@ -287,6 +305,9 @@ int main(int argc, char **argv) {
     // Tokenize and parse.
     current_input = argv[1];
     Token *tok = tokenize();
+
+    debug_show_tokens(tok);
+
     Node *node = expr(&tok, tok);
 
     if (tok->kind != TK_EOF) {

@@ -4,8 +4,15 @@ assert() {
   expected="$1"
   input="$2"
 
+  echo -e "\n\n\n===== $input ====="
+
   ./chibicc "$input" > tmp.s || exit
-  gcc -static -o tmp tmp.s
+  # gcc -static -o tmp tmp.s
+
+  echo -e "\n[tmp.s]"
+  cat tmp.s
+
+  gcc -o tmp tmp.s
   ./tmp
   actual="$?"
 
@@ -25,4 +32,4 @@ assert 47 '5+6*7'
 assert 15 '5*(9-6)'
 assert 4 '(3+5)/2'
 
-echo OK
+echo -e "\n\nOK"
