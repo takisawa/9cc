@@ -8,9 +8,10 @@ int main(int argc, char **argv) {
     Token *tok = tokenize(argv[1]);
     debug_show_tokens(tok);
 
-    Node *node = parse(tok);
+    Function *prog = parse(tok);
     
-    codegen(node);
+    // Traverse the AST to emit assembly.
+    codegen(prog);
 
     return 0;
 }
