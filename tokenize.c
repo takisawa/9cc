@@ -94,10 +94,19 @@ Token *tokenize(char *p) {
 
         // Numeric literal
         if (isdigit(*p)) {
-            cur = cur->next = new_token(TK_NUM, p, p);
+            cur->next = new_token(TK_NUM, p, p);
+            cur = cur->next;
             char *q = p;
             cur->val = strtoul(p, &p, 10);
             cur->len = p - q;
+            continue;
+        }
+
+        // Identifier
+        if ('a' <= *p && *p <= 'z') {
+            cur->next = new_token(TK_IDENT, p, p + 1);
+            cur = cur->next;
+            p++;
             continue;
         }
 
