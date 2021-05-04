@@ -10,7 +10,7 @@ assert() {
   # gcc -static -o tmp tmp.s
 
   echo -e "\n[tmp.s]"
-  cat tmp.s
+  cat -n tmp.s
 
   gcc -o tmp tmp.s
   ./tmp
@@ -70,11 +70,14 @@ assert 0 '{ return 0; }'
 # assert 3 '{ {1; {2;} return 3;} }'
 # assert 5 '{ ;;; return 5; }'
 
-assert 3 '{ if (0) return 2; return 3; }'
-assert 3 '{ if (1-1) return 2; return 3; }'
-assert 2 '{ if (1) return 2; return 3; }'
-assert 2 '{ if (2-1) return 2; return 3; }'
-assert 4 '{ if (0) { 1; 2; return 3; } else { return 4; } }'
-assert 3 '{ if (1) { 1; 2; return 3; } else { return 4; } }'
+# assert 3 '{ if (0) return 2; return 3; }'
+# assert 3 '{ if (1-1) return 2; return 3; }'
+# assert 2 '{ if (1) return 2; return 3; }'
+# assert 2 '{ if (2-1) return 2; return 3; }'
+# assert 4 '{ if (0) { 1; 2; return 3; } else { return 4; } }'
+# assert 3 '{ if (1) { 1; 2; return 3; } else { return 4; } }'
+
+assert 55 '{ i=0; j=0; for (i=0; i<=10; i=i+1) j=j+i; return j; }'
+assert 3 '{ for (;;) { return 3; } return 5; }'
 
 echo -e "\n\nOK"
