@@ -120,6 +120,7 @@ static Node *declaration(Token **rest, Token *tok) {
         Node *rhs = assign(&tok, tok->next);
         Node *node = new_binary(ND_ASSIGN, lhs, rhs, tok);
         cur->next = new_unary(ND_EXPR_STMT, node, tok);
+        cur = cur->next;
     }
 
     Node *node = new_node(ND_BLOCK, tok);

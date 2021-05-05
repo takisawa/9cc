@@ -26,6 +26,7 @@ typedef enum {
 static char *TokenKindStrs[] = {
     "TK_IDENT",
     "TK_PUNCT",
+    "TK_KEYWORD",
     "TK_NUM",
     "TK_EOF",
 };
